@@ -16,8 +16,11 @@
 #include <sys/time.h>
 #include "DianaClustering.h"
 
+#define LOGS
+#define TIMING
+
 #ifdef LOGS
-#include "../log_helper.h"
+#include "log_helper.h"
 #endif
 
 #ifdef TIMING
@@ -101,16 +104,18 @@ input_data_t *getInputData(char *filename) {
     return inputData;
 }
 
-void flagIfDifferent(int a, int b, int level, int cluster_count, int *errors, char *description) {
+void flagIfDifferent(int a, int b, int level, int cluster_count, unsigned long *errors, char *description) {
     if (a != b) {
-        printf("SDC: [L:%d, N:%d] %s -> OUT: %d , GOLD: %d\n",
+        char error_detail[200];
+        sprintf(error_detail, "SDC: [L:%d, N:%d] %s -> OUT: %d , GOLD: %d\n",
                level, cluster_count, description, a, b);
+        log_error_detail(error_detail);
         ++(*errors);
     }
 }
 
-int compare_out_and_gold(char *out_filename, char *gold_filename) {
-    int errors = 0;
+unsigned long compare_out_and_gold(char *out_filename, char *gold_filename) {
+    unsigned long errors = 0;
 
     auto *dendrogramOut = new Dendrogram(out_filename);
     auto *dendrogramGold = new Dendrogram(gold_filename);
@@ -121,7 +126,9 @@ int compare_out_and_gold(char *out_filename, char *gold_filename) {
 
     //check equal level count
     if (levels_out != levels_gold) {
-        printf("SDC: Levels -> OUT: %d , GOLD: %d\n", levels_out, levels_gold);
+        char error_detail[200];
+        sprintf(error_detail, "SDC: Levels -> OUT: %d , GOLD: %d\n", levels_out, levels_gold);
+        log_error_detail(error_detail);
         ++errors;
     }
 
@@ -163,8 +170,10 @@ int compare_out_and_gold(char *out_filename, char *gold_filename) {
             int smallest_size = (cluster_gold->size <= cluster_out->size) ? cluster_gold->size : cluster_out->size;
             for (int p = 0; p < smallest_size; ++p) {
                 if (cluster_out->points[p] != cluster_gold->points[p]) {
-                    printf("SDC: [L:%d, N:%d, P:%d] Point -> OUT: %d , GOLD: %d\n",
+                    char error_detail[200];
+                    sprintf(error_detail, "SDC: [L:%d, N:%d, P:%d] Point -> OUT: %d , GOLD: %d\n",
                            level, cluster_count, p, cluster_out->points[p], cluster_gold->points[p]);
+                    log_error_detail(error_detail);
                     ++errors;
                 }
             }
@@ -178,13 +187,17 @@ int compare_out_and_gold(char *out_filename, char *gold_filename) {
             clusters_are_not_nullptr = (cluster_out != nullptr) && (cluster_gold != nullptr);
             if (!clusters_are_not_nullptr) {
                 if ((cluster_out != nullptr) && (cluster_gold == nullptr)){
-                    printf("SDC: [L:%d] Cluster count -> OUT: >=%d , GOLD: %d\n",
+                    char error_detail[200];
+                    sprintf(error_detail, "SDC: [L:%d] Cluster count -> OUT: >=%d , GOLD: %d\n",
                            level, levels_out, levels_gold);
+                    log_error_detail(error_detail);
                     ++errors;
                 }
                 if ((cluster_out == nullptr) && (cluster_gold != nullptr)) {
-                    printf("SDC: [L:%d] Cluster count -> OUT: %d , GOLD: >=%d\n",
+                    char error_detail[200];
+                    sprintf(error_detail, "SDC: [L:%d] Cluster count -> OUT: %d , GOLD: >=%d\n",
                            level, levels_out, levels_gold);
+                    log_error_detail(error_detail);
                     ++errors;
                 }
             }
@@ -240,12 +253,20 @@ int main(int argc, char **argv) {
         }
     }
 
+    #ifdef TIMING
+        setup_start = timing_get_time();
+    #endif
+    //read data to input data struct
+    input_data_t *input_data = getInputData(input_filename);
 
     #ifdef LOGS
         set_iter_interval_print(10);
         char test_info[200];
-        snprintf(test_info, 200, "size:%d omp_num_threads:%d", size, omp_num_threads);
-        start_log_file("openmpQuicksort", test_info);
+        snprintf(test_info, 200, "instances:%d attributes:%d", input_data->num_objects, input_data->num_attributes);
+        start_log_file((char*)"diana", test_info);
+    #endif
+    #ifdef TIMING
+        setup_end = timing_get_time();
     #endif
 
     //loop indefinitely
@@ -254,15 +275,8 @@ int main(int argc, char **argv) {
             loop_start = timing_get_time();
         #endif
 
-        #ifdef TIMING
-            setup_start = timing_get_time();
-        #endif
         //read data to input data struct
-        input_data_t *input_data = getInputData(input_filename);
-        #ifdef TIMING
-            setup_end = timing_get_time();
-        #endif
-
+        input_data = getInputData(input_filename);
 
         #ifdef TIMING
             kernel_start = timing_get_time();
@@ -290,7 +304,7 @@ int main(int argc, char **argv) {
         #endif
 
         //compare out with gold (output_dendrogram, golden_dendrogram) --> TODO adapt to use log_error_detail(error_detail)
-        int detected_sdcs = compare_out_and_gold(output_filename, golden_filename);
+        unsigned long detected_sdcs = compare_out_and_gold(output_filename, golden_filename);
 
         #ifdef LOGS
             log_error_count(detected_sdcs);

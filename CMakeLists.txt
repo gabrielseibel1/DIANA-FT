@@ -37,4 +37,6 @@ add_executable(
         kmeans/kmeans.h
         kmeans/kmeans_clustering.h
         kmeans/kmeans_clustering.c
+        log_helper.h
+        log_helper.c
 )
