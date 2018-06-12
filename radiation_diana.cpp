@@ -16,9 +16,6 @@
 #include <sys/time.h>
 #include "DianaClustering.h"
 
-#define MAX_ITER 500
-#define TIMING
-
 #ifdef LOGS
 #include "../log_helper.h"
 #endif
@@ -208,12 +205,13 @@ int num_omp_threads = 1;
 int main(int argc, char **argv) {
 
     int opt;
+    int max_iter = 1000000;
     char *input_filename = nullptr;
     char *output_filename = nullptr;
     char *golden_filename = nullptr;
     float kmeans_threshold = 0.001;
 
-    while ((opt = getopt(argc, argv, "i:o:g:t:n:?")) != EOF) {
+    while ((opt = getopt(argc, argv, "i:o:g:t:n:l:?")) != EOF) {
         switch (opt) {
             case 'i':
                 input_filename = optarg;
@@ -229,6 +227,9 @@ int main(int argc, char **argv) {
                 break;
             case 'n':
                 num_omp_threads = atoi(optarg);
+                break;
+            case 'l':
+                max_iter = atoi(optarg);
                 break;
             case '?':
                 usage(argv[0]);
@@ -257,7 +258,7 @@ int main(int argc, char **argv) {
     #endif
 
     //loop indefinitely
-    for (int i = 0; i < MAX_ITER; ++i) {
+    for (int i = 0; i < max_iter; ++i) {
         #ifdef TIMING
             loop_start = timing_get_time();
         #endif

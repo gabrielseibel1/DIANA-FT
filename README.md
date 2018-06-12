@@ -16,7 +16,7 @@ Compilation should generate 4 binaries:
   - Input data
     $ ./datagen 3500 <optional -f to use float> <#attributes>
   - Gold output
-    $ ./simple_diana <-i name of input text file> <-o name of golden output binary file> <-t kmeans threshold>
+    $ ./simple_diana <-i name of input text file> <-o name of golden output binary file> <-t kmeans threshold> <-l loop iterations>
 
 * How to run a test
 
@@ -31,4 +31,4 @@ Before running the benchmark, the script radiation-benchmarks/scripts/install.py
     $ ./datagen 3500 -f 20
     $ ./simple_diana -i 3500_20f.txt -o diana_gold.bin -t 0.001
   - configurations executed
-    $ ./radiation_diana -i 3500_20f.txt -o diana_out.bin -g diana_gold.bin -t 0.001
+    $ ./radiation_diana -i 3500_20f.txt -o diana_out.bin -g diana_gold.bin -t 0.001 -l 1000000
