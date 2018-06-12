@@ -240,9 +240,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    #ifdef TIMING
-        setup_start = timing_get_time();
-    #endif
+
     #ifdef LOGS
         set_iter_interval_print(10);
         char test_info[200];
@@ -250,17 +248,19 @@ int main(int argc, char **argv) {
         start_log_file("openmpQuicksort", test_info);
     #endif
 
-    //read data to input data struct
-    input_data_t *input_data = getInputData(input_filename);
-
-    #ifdef TIMING
-        setup_end = timing_get_time();
-    #endif
-
     //loop indefinitely
     for (int i = 0; i < max_iter; ++i) {
         #ifdef TIMING
             loop_start = timing_get_time();
+        #endif
+
+        #ifdef TIMING
+            setup_start = timing_get_time();
+        #endif
+        //read data to input data struct
+        input_data_t *input_data = getInputData(input_filename);
+        #ifdef TIMING
+            setup_end = timing_get_time();
         #endif
 
 
