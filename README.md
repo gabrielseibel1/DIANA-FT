@@ -6,11 +6,10 @@
   - $ cmake ..
   - $ make
 
-Compilation should generate 4 binaries:
+Compilation should generate 3 binaries:
   - datagen: used to generate the input array, it will generate an array stored in a text file.
   - simple_diana: used to generate the gold output. Gold will be used to check if the execution generates a correct output.
   - radiation_diana: this binary will be used during radiation test, it will execute the benchmark kernel several times
-  - quick_timing: this binary is used only for testing purposes, it will measure the time spent in every part of the benchmark. This binary will not record any log information
 
 * How to generate input data and gold output
   - Input data
