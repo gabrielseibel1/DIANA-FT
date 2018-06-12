@@ -28,7 +28,7 @@ Before running the benchmark, the script radiation-benchmarks/scripts/install.py
 
 * Configuration used for Core i7-7700HQ (simple_diana takes 3.5 seconds with this processor)
   - input and gold generated
-    $ ./datagen 3500 -f 20
-    $ ./simple_diana -i 3500_20f.txt -o diana_gold.bin -t 0.001
+    $ ./datagen 7000 -f 20
+    $ ./simple_diana -i 7000_20f.txt -o diana_gold.bin -t 0.001
   - configurations executed
-    $ ./radiation_diana -i 3500_20f.txt -o diana_out.bin -g diana_gold.bin -t 0.001 -l 1000000
+    $ ./radiation_diana -i 7000_20f.txt -o diana_out.bin -g diana_gold.bin -t 0.001 -l 1000000
