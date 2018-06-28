@@ -10,33 +10,33 @@ if (OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
-add_executable(
-        datagen
+add_executable(datagen
+
         datagen/datagen.cpp
 )
 
-add_executable(
-        simple_diana
-        simple_diana.cpp
-        Dendrogram.cpp
-        Dendrogram.h
-        DianaClustering.cpp
-        DianaClustering.h
+add_executable(simple_diana
+
+        diana/simple_diana.cpp
+        diana/Dendrogram.cpp
+        diana/Dendrogram.h
+        diana/DianaClustering.cpp
+        diana/DianaClustering.h
         kmeans/kmeans.h
         kmeans/kmeans_clustering.h
         kmeans/kmeans_clustering.c
 )
 
-add_executable(
-        radiation_diana
-        radiation_diana.cpp
-        Dendrogram.cpp
-        Dendrogram.h
-        DianaClustering.cpp
-        DianaClustering.h
+add_executable(radiation_diana
+
+        radiation/radiation_diana.cpp
+        diana/Dendrogram.cpp
+        diana/Dendrogram.h
+        diana/DianaClustering.cpp
+        diana/DianaClustering.h
         kmeans/kmeans.h
         kmeans/kmeans_clustering.h
         kmeans/kmeans_clustering.c
-        log_helper.h
-        log_helper.c
+        radiation/log_helper.h
+        radiation/log_helper.c
 )

@@ -14,7 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <sys/time.h>
-#include "DianaClustering.h"
+#include "../diana/DianaClustering.h"
 
 #define LOGS
 #define TIMING

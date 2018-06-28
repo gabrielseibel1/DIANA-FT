@@ -1,6 +1,6 @@
 #include "DianaClustering.h"
 extern "C" {
-    #include "kmeans/kmeans_clustering.h"
+    #include "../kmeans/kmeans_clustering.h"
 }
 #include <cmath>
 
