@@ -1,4 +1,18 @@
-# DIANA - Divisive Analysis
+# DIANA - Fault Tolerance
+A study on the fault tolerance of **DI**visive **ANA**lysis, a top-down clustering algorithm.
+
+## DWC (Duplication With Comparison)
+Spacial duplication of the DIANA kernel. Two parallel executions are ran and then the results are compared, 
+possibly detecting an SDC.
+
+Yet to be implemented.
+
+## Selective Hardening
+Duplication and comparison of critical variables and the operations that update them.
+
+Yet to be implemented.
+
+## Radiation Tests
 
 * How to compile
   - $ mkdir build
