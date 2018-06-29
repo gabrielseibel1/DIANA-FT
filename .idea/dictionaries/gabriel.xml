@@ -3,7 +3,10 @@
     <words>
       <w>datagen</w>
       <w>dendrograms</w>
+      <w>filenames</w>
       <w>mkdir</w>
+      <w>ofstream</w>
+      <w>struct</w>
     </words>
   </dictionary>
 </component>

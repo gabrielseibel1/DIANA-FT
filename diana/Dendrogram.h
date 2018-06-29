@@ -7,6 +7,7 @@
 
 
 #include <map>
+#include <vector>
 
 typedef struct cluster {
     int size;
@@ -26,7 +27,7 @@ typedef struct cluster {
 
 class Dendrogram {
 private:
-    std::map<cluster_t*, int> ids;
+    std::vector<std::pair<cluster_t*, int>> ids;
 
     void printCluster(cluster_t *cluster);
 
@@ -34,6 +35,8 @@ private:
     void splitPoints(int **points_1, int **points_2, int *points_1_size, int *points_2_size, int *points_membership,
                       int n_points, int *list_of_points);
     void printClusterSavedIds(cluster_t *cluster);
+
+    void catalogIds();
 public:
     explicit Dendrogram(char *binary_filename);
 
@@ -65,6 +68,7 @@ public:
     void printIdsMap();
 
     int countClustersInLevel(int level);
+
 };
 
 

@@ -22,16 +22,21 @@ Dendrogram::Dendrogram(int father_cluster_size) {
     father_cluster->brother_id = 0; //there is none
 
     clusters.insert(std::make_pair(0, father_cluster));
-    ids.insert(std::make_pair(nullptr, 0));
+    ids.emplace_back(nullptr, 0);
 }
 
 int Dendrogram::getClusterId(cluster_t *cluster_ptr) {
-    auto it = ids.find(cluster_ptr);
+    std::vector<std::pair<cluster_t*, int>>::iterator it;
+
+    for (it = ids.begin(); it != ids.end(); ++it) {
+        if (it->first == cluster_ptr) break;
+    }
 
     if (it == ids.end()) {
         --it;
-        ids.insert(std::make_pair(cluster_ptr, it->second + 1));
-        return it->second + 1;
+        int lastId = it->second + 1;
+        ids.emplace_back(cluster_ptr, lastId + 1);
+        return lastId;
     } else {
         return it->second;
     }
@@ -342,15 +347,33 @@ int Dendrogram::fromBinaryFile(char *filename) {
     }
 }
 
-void Dendrogram::updateIds() {
-    auto idsIt = ids.end();
-    idsIt--;
-    int maxId = idsIt->second;
-    idsIt = ids.begin();
-    for (int i = 0; i < maxId; ++i) {
-        idsIt->second = i;
-        idsIt++;
+void Dendrogram::catalogIds() {
+    auto dendroIt = clusters.begin();
+    while (dendroIt != clusters.end()) {
+        cluster_t *cluster = dendroIt->second;
+        do {
+            getClusterId(cluster);
+            getClusterId(cluster->father_cluster);
+            getClusterId(cluster->next_cluster);
+            getClusterId(cluster->left_child);
+            getClusterId(cluster->right_child);
+
+        } while ((cluster = cluster->next_cluster) != nullptr);
+        ++dendroIt;
     }
+
+    int lastId = -1;
+    for (auto idsIt = ids.begin(); idsIt != ids.end(); ++idsIt) {
+        int id = idsIt->second;
+        if (id != lastId + 1) {
+            idsIt->second = lastId + 1;
+        }
+        lastId ++;
+    }
+}
+
+void Dendrogram::updateIds() {
+    //catalogIds();
 
     auto dendroIt = clusters.begin();
     while (dendroIt != clusters.end()) {
