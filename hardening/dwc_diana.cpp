@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <getopt.h>
+#include <omp.h>
 #include "../diana/Dendrogram.h"
 #include "DianaDuplicator.h"
 #include "DendrogramComparator.h"
@@ -55,6 +56,8 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    auto startTime = omp_get_wtime();
+
     //spacial duplication (2 threads)
     DianaDuplicator dwc;
     dwc.spacialDuplication(inputFilename);
@@ -91,4 +94,5 @@ int main(int argc, char *argv[]) {
         fileOut.close();
     }
 
+    printf("Finished DWC in %f seconds", omp_get_wtime() - startTime);
 }
