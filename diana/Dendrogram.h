@@ -27,7 +27,7 @@ typedef struct cluster {
 
 class Dendrogram {
 private:
-    std::vector<std::pair<cluster_t*, int>> ids;
+    std::map<cluster_t*, int> ids;
 
     void printCluster(cluster_t *cluster);
 

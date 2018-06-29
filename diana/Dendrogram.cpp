@@ -22,21 +22,17 @@ Dendrogram::Dendrogram(int father_cluster_size) {
     father_cluster->brother_id = 0; //there is none
 
     clusters.insert(std::make_pair(0, father_cluster));
-    ids.emplace_back(nullptr, 0);
+    ids[nullptr] = 0;
 }
 
 int Dendrogram::getClusterId(cluster_t *cluster_ptr) {
-    std::vector<std::pair<cluster_t*, int>>::iterator it;
-
-    for (it = ids.begin(); it != ids.end(); ++it) {
-        if (it->first == cluster_ptr) break;
-    }
+    auto it = ids.find(cluster_ptr);
 
     if (it == ids.end()) {
-        --it;
-        int lastId = it->second + 1;
-        ids.emplace_back(cluster_ptr, lastId + 1);
-        return lastId;
+
+        ids[cluster_ptr] = static_cast<int>(ids.size());
+        return static_cast<int>(ids.size());
+
     } else {
         return it->second;
     }
