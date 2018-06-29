@@ -104,7 +104,6 @@ int main(int argc, char **argv) {
     extern int optind;
     char *filename = 0;
     char *out_filename = 0;
-    char *gold_filename = 0;
     float *buf;
     float **attributes;
     int i, j;
@@ -196,7 +195,7 @@ int main(int argc, char **argv) {
 
     output_write_timing = omp_get_wtime();
     int output_success = dianaClustering.dendrogram->toBinaryFile(out_filename) >= 0;
-    int output_success2 = dianaClustering.dendrogram->toTextFile((char*)"diana_gold.txt") >= 0;
+    //int output_success2 = dianaClustering.dendrogram->toTextFile((char*)"diana_gold.txt") >= 0;
     output_write_timing = omp_get_wtime() - output_write_timing;
 
     if (output_success) {
