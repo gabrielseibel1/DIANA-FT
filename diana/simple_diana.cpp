@@ -188,7 +188,7 @@ int main(int argc, char **argv) {
     computation_timing = omp_get_wtime();
     /* perform DIANA and saves result in dendrogram */
     DianaClustering dianaClustering(numObjects);
-    dianaClustering.doDianaClustering(attributes, numAttributes, threshold);
+    dianaClustering.cluster(attributes, numAttributes, threshold);
     computation_timing = omp_get_wtime() - computation_timing;
 
     //show results

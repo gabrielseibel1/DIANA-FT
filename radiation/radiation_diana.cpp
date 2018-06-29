@@ -287,7 +287,7 @@ int main(int argc, char **argv) {
 
         //call diana kernel and write output to file
         DianaClustering dianaClustering(input_data->num_objects);
-        dianaClustering.doDianaClustering(input_data->attributes, input_data->num_attributes, kmeans_threshold);
+        dianaClustering.cluster(input_data->attributes, input_data->num_attributes, kmeans_threshold);
         int output_success = dianaClustering.dendrogram->toBinaryFile(output_filename) >= 0;
         int output_success2 = dianaClustering.dendrogram->toTextFile((char*)"diana_out.txt") >= 0;
 

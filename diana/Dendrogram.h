@@ -40,7 +40,7 @@ public:
     explicit Dendrogram(int father_cluster_size);
 
     void print();
-    void printSavedIds();
+    void printWithSavedIds();
 
     int toBinaryFile(char *filename);
     int toTextFile(char *filename);
@@ -61,6 +61,10 @@ public:
     std::map<int, cluster_t*> clusters;
 
     Dendrogram();
+
+    void printIdsMap();
+
+    int countClustersInLevel(int level);
 };
 
 

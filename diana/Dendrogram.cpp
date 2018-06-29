@@ -105,14 +105,14 @@ int Dendrogram::splitCluster(int level, int *points_membership, cluster_t *origi
     //if kmeans said all points are classified as same cluster, there is no need to split the original cluster in 2!!!
     if (points_1_size <= 0 || points_2_size <= 0) return false;
 
-    cluster_t *cluster_1 = (cluster_t *) malloc(sizeof(cluster_t));
+    auto *cluster_1 = (cluster_t *) malloc(sizeof(cluster_t));
     cluster_1->points = points_1;
     cluster_1->size = points_1_size;
     cluster_1->father_cluster = original_cluster;
     cluster_1->left_child = nullptr;
     cluster_1->right_child = nullptr;
 
-    cluster_t *cluster_2 = (cluster_t *) malloc(sizeof(cluster_t));
+    auto *cluster_2 = (cluster_t *) malloc(sizeof(cluster_t));
     cluster_2->points = points_2;
     cluster_2->size = points_2_size;
     cluster_2->father_cluster = original_cluster;
@@ -127,7 +127,7 @@ int Dendrogram::splitCluster(int level, int *points_membership, cluster_t *origi
     original_cluster->left_child = cluster_1;
     original_cluster->right_child = cluster_2;
 
-    std::map<int, cluster_t *>::iterator it = clusters.find(level);
+    auto it = clusters.find(level);
 
     if (it == clusters.end()) { //could not find level - create new level and associate cluster to it
         clusters.insert(std::make_pair(level, cluster_1));
@@ -140,10 +140,30 @@ int Dendrogram::splitCluster(int level, int *points_membership, cluster_t *origi
     return true;
 }
 
+int Dendrogram::countClustersInLevel(int level) {
+    cluster_t *cluster = clusters.find(level)->second;
+    int count = 0;
+    while (cluster) {
+        ++count;
+        cluster = cluster->next_cluster;
+    }
+
+    return count;
+}
+
+
 cluster_t *Dendrogram::getCluster(int level, int cluster_index) {
     cluster_t *cluster = clusters.find(level)->second;
     for (int i = 0; i < cluster_index; ++i) {
-        if (!cluster) break;
+        if (!cluster) {
+            if (i != cluster_index - 1) {
+              fprintf(stderr, "Unreachable cluster_index %d in level %d! Stopped at index %d\n",
+                      cluster_index, level, i);
+              exit(EXIT_FAILURE);
+            } else {
+                break;
+            }
+        }
         cluster = cluster->next_cluster;
     }
     return cluster;
@@ -336,7 +356,6 @@ void Dendrogram::updateIds() {
     while (dendroIt != clusters.end()) {
         cluster_t *cluster = dendroIt->second;
         do {
-            //cluster to file
             cluster->id = getClusterId(cluster);
             cluster->father_id = getClusterId(cluster->father_cluster);
             cluster->brother_id = getClusterId(cluster->next_cluster);
@@ -363,7 +382,7 @@ void Dendrogram::printClusterSavedIds(cluster_t *cluster) {
     std::cout << "\t}\n";
 }
 
-void Dendrogram::printSavedIds() {
+void Dendrogram::printWithSavedIds() {
     std::cout << "\n\nDENDROGRAM:\n";
 
     auto it = clusters.begin();
@@ -377,6 +396,18 @@ void Dendrogram::printSavedIds() {
         std::cout << "}\n";
         ++it;
     }
+}
+
+void Dendrogram::printIdsMap() {
+    std::cout << "\n\nIDS MAP: ";
+
+    auto it = ids.begin();
+    while (it != ids.end()) {
+        std::cout << "{" << it->first << "," << it->second << "} , ";
+        ++it;
+    }
+
+    std::cout << "\n\n";
 }
 
 Dendrogram::Dendrogram(char* binary_filename) {

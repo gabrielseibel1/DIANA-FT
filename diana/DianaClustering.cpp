@@ -22,15 +22,15 @@ int *DianaClustering::membershipFromKmeans(float **points, int n_features, int n
 }
 
 /*----< diana_clustering() >---------------------------------------------*/
-void DianaClustering::doDianaClustering(float **all_points,    /* in: [n_points][n_features] */
-                                        int n_features, float threshold) {
+void DianaClustering::cluster(float **all_points,    /* in: [n_points][n_features] */
+                              int n_features, float threshold) {
 
     //iterate over the levels of the dendrogram while not all clusters are unitary
     bool there_was_a_cluster_split; //condition to stop algorithm
     int level = 1; //1 (not 0) because father cluster has already been inserted
     do {
         there_was_a_cluster_split = false;
-        int n_clusters_in_anterior_level = (int) pow(2, level-1); // 2^lvl-1
+        int n_clusters_in_anterior_level = dendrogram->countClustersInLevel(level-1);
 
         //for each big cluster (of the anterior level) build two smaller clusters
         for (int cluster_to_divide_index = 0; cluster_to_divide_index < n_clusters_in_anterior_level; ++cluster_to_divide_index) {
