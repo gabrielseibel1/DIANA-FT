@@ -29,8 +29,13 @@ add_executable(simple_diana
 
 add_executable(dwc_diana
 
-        dwc/Duplicator.cpp
-        dwc/Duplicator.h
+        hardening/dwc_diana.cpp
+        hardening/DianaDuplicator.cpp
+        hardening/DianaDuplicator.h
+        hardening/DendrogramComparator.cpp
+        hardening/DendrogramComparator.h
+        hardening/DataReader.cpp
+        hardening/DataReader.h
         diana/Dendrogram.cpp
         diana/Dendrogram.h
         diana/DianaClustering.cpp
