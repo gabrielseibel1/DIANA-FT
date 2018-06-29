@@ -55,42 +55,40 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    for (int i = 0; i < 1; ++i) {
+    //spacial duplication (2 threads)
+    DianaDuplicator dwc;
+    dwc.spacialDuplication(inputFilename);
+    dwc.saveDendrogramBin(0, outputFilename);
 
-        //spacial duplication (2 threads)
-        DianaDuplicator dwc;
-        dwc.spacialDuplication(inputFilename);
-        dwc.saveDendrogramBin(0, outputFilename);
+    //if user specified .txt files to dump results, use them
+    if (textOutputsFilenames[0]) dwc.saveDendrogramText(0, textOutputsFilenames[0]);
+    if (textOutputsFilenames[1]) dwc.saveDendrogramText(1, textOutputsFilenames[1]);
 
-        //if user specified .txt files to dump results, use them
-        if (textOutputsFilenames[0]) dwc.saveDendrogramText(0, textOutputsFilenames[0]);
-        if (textOutputsFilenames[1]) dwc.saveDendrogramText(1, textOutputsFilenames[1]);
+    //if there was an SDC, update SDCs count in file
+    if (dwc.sdcDetected()) {
+        int previousSDCs;
 
-        //if there was an SDC, update SDCs count in file
-        if (dwc.sdcDetected()) {
-            int previousSDCs;
+        //open file as `in` to read it
+        std::ifstream fileIn(sdcDetectionsFilename);
 
-            //open file as `in` to read it
-            std::ifstream fileIn(sdcDetectionsFilename);
-
-            //get SDCs reported until now
-            if (!fileIn.is_open())
-                previousSDCs = 0;
-            else {
-                fileIn >> previousSDCs;
-                fileIn.close();
-            }
-
-            //open file as `out` to write to it
-            std::ofstream fileOut(sdcDetectionsFilename, std::ofstream::trunc);
-
-            if (!fileOut.is_open()) {
-                fprintf(stderr, "Can't open %s as ofstream to report SDC\n", sdcDetectionsFilename);
-                exit(EXIT_FAILURE);
-            }
-
-            fileOut << previousSDCs + 1;
-            fileOut.close();
+        //get SDCs reported until now
+        if (!fileIn.is_open())
+            previousSDCs = 0;
+        else {
+            fileIn >> previousSDCs;
+            fileIn.close();
         }
+
+        //open file as `out` to write to it
+        std::ofstream fileOut(sdcDetectionsFilename, std::ofstream::trunc);
+
+        if (!fileOut.is_open()) {
+            fprintf(stderr, "Can't open %s as ofstream to report SDC\n", sdcDetectionsFilename);
+            exit(EXIT_FAILURE);
+        }
+
+        fileOut << previousSDCs + 1;
+        fileOut.close();
     }
+
 }
