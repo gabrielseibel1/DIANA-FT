@@ -18,7 +18,7 @@ A study on the fault tolerance of **DI**visive **ANA**lysis, a top-down clusteri
 Spacial duplication of the DIANA kernel. Two parallel executions are ran and then the results are compared, 
 possibly detecting an SDC. If so, a counter is updated in a file.
 
-    $ ./dwc_diana -i <.txt input> -d <.txt name to count detected sdcs> [optional: -a <.txt output1> -b <.txt output2>]
+    $ ./dwc_diana -i <.txt input> -o <.bin output> -d <.txt name to count detected sdcs> [optional: -a <.txt output1> -b <.txt output2>]
 
 ## Selective Hardening
 Duplication and comparison of critical variables and the operations that update them.

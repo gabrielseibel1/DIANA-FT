@@ -53,9 +53,8 @@ void DianaDuplicator::saveDendrogramBin(int index, char *filename) {
     dendrograms[index]->toBinaryFile(filename);
 }
 
-void DianaDuplicator::saveDendrogramsText( char *filenames[2]) {
-    dendrograms[0]->toTextFile(filenames[0]);
-    dendrograms[1]->toTextFile(filenames[1]);
+void DianaDuplicator::saveDendrogramText(int index, char *filename) {
+    dendrograms[index]->toTextFile(filename);
 }
 
 DianaDuplicator::DianaDuplicator() {

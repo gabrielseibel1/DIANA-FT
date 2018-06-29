@@ -14,10 +14,10 @@ void usage(char *argv0) {
     const char *help =
             "Usage: %s [switches]\n"
             "       -i  input-filename      : file containing data to be clustered\n"
-            "       -a  output-filename0    : file containing the output result\n"
-            "       -b  output-filename1    : file containing the output result\n"
             "       -d  detected-filename   : file to store detected sdcs\n"
-            "       -g  golden-filename     : file containing the golden result\n";
+            "       -o  output-filename0    : file containing the output result (bin) \n"
+            "[OPT]  -a  output-filename0    : file containing #1 output result (txt) \n"
+            "[OPT]  -b  output-filename1    : file containing #2 output result (txt)\n";
     fprintf(stderr, help, argv0);
     exit(-1);
 }
@@ -25,26 +25,26 @@ void usage(char *argv0) {
 int main(int argc, char *argv[]) {
     int opt;
     char *inputFilename;
-    char *outputFilenames[2];
+    char *outputFilename;
+    char *textOutputsFilenames[2] = {nullptr, nullptr};
     char *sdcDetectionsFilename;
-    char *goldenFilename;
 
-    while ((opt = getopt(argc, argv, "i:a:b:d:g:?")) != EOF) {
+    while ((opt = getopt(argc, argv, "i:o:d:a:b:?")) != EOF) {
         switch (opt) {
             case 'i':
                 inputFilename = optarg;
                 break;
+            case 'o':
+                outputFilename = optarg;
+                break;
             case 'a':
-                outputFilenames[0] = optarg;
+                textOutputsFilenames[0] = optarg;
                 break;
             case 'b':
-                outputFilenames[1] = optarg;
+                textOutputsFilenames[1] = optarg;
                 break;
             case 'd':
                 sdcDetectionsFilename = optarg;
-                break;
-            case 'g':
-                goldenFilename = optarg;
                 break;
             case '?':
                 usage(argv[0]);
@@ -60,8 +60,11 @@ int main(int argc, char *argv[]) {
         //spacial duplication (2 threads)
         DianaDuplicator dwc;
         dwc.spacialDuplication(inputFilename);
-        dwc.saveDendrogramBin(0, outputFilenames[0]);
-        //dwc.saveDendrogramsText(outputFilenames); //DEBUG
+        dwc.saveDendrogramBin(0, outputFilename);
+
+        //if user specified .txt files to dump results, use them
+        if (textOutputsFilenames[0]) dwc.saveDendrogramText(0, textOutputsFilenames[0]);
+        if (textOutputsFilenames[1]) dwc.saveDendrogramText(1, textOutputsFilenames[1]);
 
         //if there was an SDC, update SDCs count in file
         if (dwc.sdcDetected()) {

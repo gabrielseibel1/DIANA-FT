@@ -35,9 +35,9 @@ public:
     void saveDendrogramBin(int index, char *filename);
 
     /**
-     * Save the two dendrograms in text files
+     * Save one of the dendrograms in a text file
      */
-    void saveDendrogramsText(char *filenames[2]);
+    void saveDendrogramText(int index, char *filename);
 
 private:
 
