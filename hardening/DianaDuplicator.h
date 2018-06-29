@@ -9,7 +9,7 @@
 #include "../diana/Dendrogram.h"
 #include "DataReader.h"
 
-#define STD_KMEANS_THRESHOLD 0.01
+#define STD_KMEANS_THRESHOLD 0.001
 
 class DianaDuplicator {
 
