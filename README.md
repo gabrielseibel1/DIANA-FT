@@ -26,7 +26,7 @@ Duplication and comparison of critical variables and the operations that update 
 Yet to be implemented.
 
 ## Radiation Tests
-Before running the benchmark, the script https://github.com/UFRGS-CAROL/radiation-benchmarks/scripts/install.py should be executed. This script will create the folder to store the log files and create the conf file in /etc/radiation-benchmark.conf
+Before running the benchmark, the script https://github.com/UFRGS-CAROL/radiation-benchmarks/blob/master/scripts/install.py should be executed. This script will create the folder to store the log files and create the conf file in /etc/radiation-benchmark.conf
 
       $ ./radiation_diana <-i input file> <-o output file> <-g golden file> <-t kmeans threshold>
     
