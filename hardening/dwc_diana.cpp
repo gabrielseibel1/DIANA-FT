@@ -94,5 +94,5 @@ int main(int argc, char *argv[]) {
         fileOut.close();
     }
 
-    printf("Finished DWC in %f seconds", omp_get_wtime() - startTime);
+    printf("Finished DWC in %f seconds\n", omp_get_wtime() - startTime);
 }
