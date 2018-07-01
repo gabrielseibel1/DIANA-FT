@@ -93,7 +93,10 @@ int main(int argc, char *argv[]) {
         fileOut.close();
 
         //infinite loop and wait to be killed
-        while (41 < 42) {}
+        for (int i = 0; i < 42; i++) {
+            printf(".");
+            i--;
+        }
 
     } else {
         //if no SDC detected, save output
