@@ -9,7 +9,7 @@
 #include "../diana/DianaClustering.h"
 
 void DianaDuplicator::runKernel(InputData *inputData, int number, Dendrogram **ptrToResult) {
-    printf("Thread %d running ...\n", number);
+    printf("Kernel %d running ...\n", number);
 
     //run DIANA
     DianaClustering diana = DianaClustering(inputData->numObjects);
@@ -22,6 +22,8 @@ void DianaDuplicator::runKernel(InputData *inputData, int number, Dendrogram **p
 }
 
 void DianaDuplicator::spacialDuplication(char *inputFilename) {
+    printf("Spacial Duplication\n");
+
     //read input data
     auto *dataReader = new DataReader();
     dataReader->read(inputFilename);
@@ -60,6 +62,11 @@ void DianaDuplicator::saveDendrogramText(int index, char *filename) {
 DianaDuplicator::DianaDuplicator() {
     dendrograms[0] = nullptr;
     dendrograms[1] = nullptr;
+}
+
+DianaDuplicator::~DianaDuplicator() {
+    delete dendrograms[0];
+    delete dendrograms[1];
 }
 
 

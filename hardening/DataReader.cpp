@@ -31,7 +31,7 @@ void DataReader::read(char *filename) {
     }
 
     /* allocate space for attributes[] and read attributes of all objects */
-    buf = (float *) malloc(data->numObjects * data->numAttributes * sizeof(float));
+    //buf = (float *) malloc(data->numObjects * data->numAttributes * sizeof(float));
     data->attributes = (float **) malloc(data->numObjects * sizeof(float *));
     data->attributes[0] = (float *) malloc(data->numObjects * data->numAttributes * sizeof(float));
     for (i = 1; i < data->numObjects; i++)
@@ -41,13 +41,13 @@ void DataReader::read(char *filename) {
     while (fgets(line, 1024, infile) != nullptr) {
         if (strtok(line, " \t\n") == nullptr) continue;
         for (j = 0; j < data->numAttributes; j++) {
-            buf[i] = static_cast<float>(atof(strtok(nullptr, " ,\t\n")));
+            /*buf[i]*/data->attributes[0][i] = static_cast<float>(atof(strtok(nullptr, " ,\t\n")));
             i++;
         }
     }
     fclose(infile);
 
-    memcpy(data->attributes[0], buf, data->numObjects * data->numAttributes * sizeof(float));
+    //memcpy(data->attributes[0], buf, data->numObjects * data->numAttributes * sizeof(float));
 }
 
 DataReader::DataReader() {
@@ -65,5 +65,8 @@ InputData::InputData() {
 }
 
 InputData::~InputData() {
-    if (attributes) free(attributes);
+    if (attributes) {
+        free(attributes[0]);
+        free(attributes);
+    }
 }

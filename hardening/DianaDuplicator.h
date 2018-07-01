@@ -39,6 +39,8 @@ public:
      */
     void saveDendrogramText(int index, char *filename);
 
+    virtual ~DianaDuplicator();
+
 private:
 
 

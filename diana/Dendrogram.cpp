@@ -432,3 +432,19 @@ void Dendrogram::printIdsMap() {
 Dendrogram::Dendrogram(char* binary_filename) {
     fromBinaryFile(binary_filename);
 }
+
+Dendrogram::~Dendrogram() {
+    auto dendroIt = clusters.begin();
+    while (dendroIt != clusters.end()) {
+        cluster_t *cluster = dendroIt->second;
+        do {
+
+            free(cluster->points);
+            cluster_t* toFree = cluster;
+            cluster = cluster->next_cluster;
+            free(toFree);
+
+        } while (cluster != nullptr);
+        ++dendroIt;
+    }
+}

@@ -38,6 +38,8 @@ private:
 
     void catalogIds();
 public:
+    virtual ~Dendrogram();
+
     explicit Dendrogram(char *binary_filename);
 
     explicit Dendrogram(int father_cluster_size);
@@ -62,8 +64,6 @@ public:
     void printlusterSavedIds(cluster_t *cluster);
 
     std::map<int, cluster_t*> clusters;
-
-    Dendrogram();
 
     void printIdsMap();
 

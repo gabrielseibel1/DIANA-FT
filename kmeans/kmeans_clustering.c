@@ -113,7 +113,7 @@ float euclid_dist_2(float *pt1,
 
 
 /*----< kmeans_clustering() >---------------------------------------------*/
-float** kmeans_clustering(float **feature,    /* in: [npoints][nfeatures] */
+void kmeans_clustering(float **feature,    /* in: [npoints][nfeatures] */
                           int     nfeatures,
                           int     npoints,
                           int     nclusters,
@@ -233,11 +233,21 @@ float** kmeans_clustering(float **feature,    /* in: [npoints][nfeatures] */
         
     } while (delta > threshold && loop++ < 500);
 
-    
+    for (i=0; i<nthreads; i++)
+    {
+        for (j=0; j<nclusters; j++)
+            free(partial_new_centers[i][j]);
+    }
+    free(partial_new_centers[0]);
+    free(partial_new_centers);
+	free(partial_new_centers_len[0]);
+    free(partial_new_centers_len);
+
     free(new_centers[0]);
     free(new_centers);
     free(new_centers_len);
 
-    return clusters;
+    free(clusters[0]);
+    free(clusters);
 }
 

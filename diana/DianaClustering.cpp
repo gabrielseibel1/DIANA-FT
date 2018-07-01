@@ -49,6 +49,10 @@ void DianaClustering::cluster(float **all_points,    /* in: [n_points][n_feature
                                                                 threshold);
 
                 there_was_a_cluster_split = dendrogram->splitCluster(level, points_membership, cluster_to_divide) || there_was_a_cluster_split;
+
+                free(points_membership);
+                free(points_with_attributes_from_cluster_to_divide[0]);
+                free(points_with_attributes_from_cluster_to_divide);
             }
         }
 
