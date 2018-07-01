@@ -61,13 +61,12 @@ int main(int argc, char *argv[]) {
     //spacial duplication (2 threads)
     DianaDuplicator dwc;
     dwc.spacialDuplication(inputFilename);
-    dwc.saveDendrogramBin(0, outputFilename);
 
     //if user specified .txt files to dump results, use them
     if (textOutputsFilenames[0]) dwc.saveDendrogramText(0, textOutputsFilenames[0]);
     if (textOutputsFilenames[1]) dwc.saveDendrogramText(1, textOutputsFilenames[1]);
 
-    //if there was an SDC, update SDCs count in file
+    //if there was an SDC, update SDCs count in file and generate a DUE (infinite loop)
     if (dwc.sdcDetected()) {
         int previousSDCs;
 
@@ -92,6 +91,13 @@ int main(int argc, char *argv[]) {
 
         fileOut << previousSDCs + 1;
         fileOut.close();
+
+        //infinite loop and wait to be killed
+        while (41 < 42) {}
+
+    } else {
+        //if no SDC detected, save output
+        dwc.saveDendrogramBin(0, outputFilename);
     }
 
     printf("Finished DWC in %f seconds\n", omp_get_wtime() - startTime);
