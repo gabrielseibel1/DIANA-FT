@@ -58,9 +58,10 @@ int main(int argc, char *argv[]) {
 
     auto startTime = omp_get_wtime();
 
-    //spacial duplication (2 threads)
+    //run duplication
     DianaDuplicator dwc;
-    dwc.spacialDuplication(inputFilename);
+    //dwc.spacialDuplication(inputFilename);
+    dwc.temporalDuplication(inputFilename);
 
     //if user specified .txt files to dump results, use them
     if (textOutputsFilenames[0]) dwc.saveDendrogramText(0, textOutputsFilenames[0]);
@@ -93,9 +94,9 @@ int main(int argc, char *argv[]) {
         fileOut.close();
 
         //infinite loop and wait to be killed
-        for (int i = 0; i < 42; i++) {
+        for (int j = 0; j < 42; j++) {
             printf(".");
-            i--;
+            j--;
         }
 
     } else {

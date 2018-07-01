@@ -24,6 +24,12 @@ public:
     void spacialDuplication(char *inputFilename);
 
     /**
+     * Calls DIANA kernel two times, sequentially, on the main thread, and saves results in memory.
+     * @param inputFilename the name of the input file
+     */
+    void temporalDuplication(char *inputFilename);
+
+    /**
      * Compares saved dendrograms for detected SDCs
      * @return whether an SDC was detected
      */

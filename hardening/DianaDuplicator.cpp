@@ -18,7 +18,21 @@ void DianaDuplicator::runKernel(InputData *inputData, int number, Dendrogram **p
     //save result to provided location
     *ptrToResult = diana.dendrogram;
 
-    printf("Thread %d finished\n", number);
+    printf("Kernel %d finished\n", number);
+}
+
+void DianaDuplicator::temporalDuplication(char* inputFilename) {
+    printf("Temporal Duplication\n");
+
+    //read input data
+    auto *dataReader = new DataReader();
+    dataReader->read(inputFilename);
+
+    //call kernel two times
+    runKernel(dataReader->data, 0, &dendrograms[0]);
+    runKernel(dataReader->data, 1, &dendrograms[1]);
+
+    delete dataReader;
 }
 
 void DianaDuplicator::spacialDuplication(char *inputFilename) {
