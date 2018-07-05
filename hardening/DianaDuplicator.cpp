@@ -5,7 +5,7 @@
 #include <thread>
 #include "DianaDuplicator.h"
 #include "DendrogramComparator.h"
-#include "DataReader.h"
+#include "../diana/DataReader.h"
 #include "../diana/DianaClustering.h"
 
 void DianaDuplicator::runKernel(InputData *inputData, int number, Dendrogram **ptrToResult) {

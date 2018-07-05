@@ -34,8 +34,8 @@ add_executable(dwc_diana
         hardening/DianaDuplicator.h
         hardening/DendrogramComparator.cpp
         hardening/DendrogramComparator.h
-        hardening/DataReader.cpp
-        hardening/DataReader.h
+        diana/DataReader.cpp
+        diana/DataReader.h
         diana/Dendrogram.cpp
         diana/Dendrogram.h
         diana/DianaClustering.cpp

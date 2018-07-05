@@ -7,7 +7,7 @@
 
 
 #include "../diana/Dendrogram.h"
-#include "DataReader.h"
+#include "../diana/DataReader.h"
 
 #define STD_KMEANS_THRESHOLD 0.001
 

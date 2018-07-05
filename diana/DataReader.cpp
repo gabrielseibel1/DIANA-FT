@@ -8,7 +8,6 @@
 #include "DataReader.h"
 
 void DataReader::read(char *filename) {
-    float *buf;
     char line[1024];
     int i, j;
 
@@ -31,7 +30,6 @@ void DataReader::read(char *filename) {
     }
 
     /* allocate space for attributes[] and read attributes of all objects */
-    //buf = (float *) malloc(data->numObjects * data->numAttributes * sizeof(float));
     data->attributes = (float **) malloc(data->numObjects * sizeof(float *));
     data->attributes[0] = (float *) malloc(data->numObjects * data->numAttributes * sizeof(float));
     for (i = 1; i < data->numObjects; i++)
@@ -46,8 +44,6 @@ void DataReader::read(char *filename) {
         }
     }
     fclose(infile);
-
-    //memcpy(data->attributes[0], buf, data->numObjects * data->numAttributes * sizeof(float));
 }
 
 DataReader::DataReader() {
