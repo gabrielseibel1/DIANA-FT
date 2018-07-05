@@ -76,8 +76,7 @@
 
 #include "Dendrogram.h"
 #include "DianaClustering.h"
-
-extern double wtime(void);
+#include "DataReader.h"
 
 int num_omp_threads = 1;
 
@@ -100,26 +99,18 @@ int main(int argc, char **argv) {
     printf("\n\n^^^^^^^^^^^^^^^^^^^^^^^^^ START OF DIANA ^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 
     int opt;
-    extern char *optarg;
-    extern int optind;
-    char *filename = 0;
-    char *out_filename = 0;
-    float *buf;
-    float **attributes;
-    int i, j;
+    char *inputFilename = nullptr;
+    char *out_filename = nullptr;
 
-    int numAttributes;
-    int numObjects;
-    char line[1024];
     float threshold = 0.001;
     double computation_timing, total_timing, input_read_timing, output_write_timing, compare_timing;
 
     total_timing = omp_get_wtime();
-    input_read_timing = omp_get_wtime();
+
     while ((opt = getopt(argc, argv, "i:o:t:n:?")) != EOF) {
         switch (opt) {
             case 'i':
-                filename = optarg;
+                inputFilename = optarg;
                 break;
             case 'o':
                 out_filename = optarg;
@@ -140,58 +131,23 @@ int main(int argc, char **argv) {
     }
 
 
-    if (filename == 0 || out_filename == 0) usage(argv[0]);
+    if (inputFilename == nullptr || out_filename == nullptr) usage(argv[0]);
 
-    numAttributes = numObjects = 0;
-
-    /* from the input file, get the numAttributes and numObjects ------------*/
-
-    FILE *infile;
-    if ((infile = fopen(filename, "r")) == NULL) {
-        fprintf(stderr, "Error: no such file (%s)\n", filename);
-        exit(1);
-    }
-    while (fgets(line, 1024, infile) != NULL)
-        if (strtok(line, " \t\n") != 0)
-            numObjects++;
-    rewind(infile);
-    while (fgets(line, 1024, infile) != NULL) {
-        if (strtok(line, " \t\n") != 0) {
-            /* ignore the id (first attribute): numAttributes = 1; */
-            while (strtok(NULL, " ,\t\n") != NULL) numAttributes++;
-            break;
-        }
-    }
-
-    /* allocate space for attributes[] and read attributes of all objects */
-    buf = (float *) malloc(numObjects * numAttributes * sizeof(float));
-    attributes = (float **) malloc(numObjects * sizeof(float *));
-    attributes[0] = (float *) malloc(numObjects * numAttributes * sizeof(float));
-    for (i = 1; i < numObjects; i++)
-        attributes[i] = attributes[i - 1] + numAttributes;
-    rewind(infile);
-    i = 0;
-    while (fgets(line, 1024, infile) != NULL) {
-        if (strtok(line, " \t\n") == NULL) continue;
-        for (j = 0; j < numAttributes; j++) {
-            buf[i] = atof(strtok(NULL, " ,\t\n"));
-            i++;
-        }
-    }
-    fclose(infile);
-    memcpy(attributes[0], buf, numObjects * numAttributes * sizeof(float));
-    //printf("I/O completed\n");
+    input_read_timing = omp_get_wtime();
+    //read input data
+    auto *dataReader = new DataReader();
+    dataReader->read(inputFilename);
     input_read_timing = omp_get_wtime() - input_read_timing;
 
     //run diana
     computation_timing = omp_get_wtime();
-    /* perform DIANA and saves result in dendrogram */
-    DianaClustering dianaClustering(numObjects);
-    dianaClustering.cluster(attributes, numAttributes, threshold);
+    DianaClustering dianaClustering(dataReader->data->numObjects);
+    dianaClustering.cluster(dataReader->data->attributes, dataReader->data->numAttributes, threshold);
     computation_timing = omp_get_wtime() - computation_timing;
 
     //show results
-    printf("\nDivisive Analysis completed for %d data objects with %d features each\n", numObjects, numAttributes);
+    printf("\nDivisive Analysis completed for %d data objects with %d features each\n",
+           dataReader->data->numObjects, dataReader->data->numAttributes);
 
     output_write_timing = omp_get_wtime();
     int output_success = dianaClustering.dendrogram->toBinaryFile(out_filename) >= 0;
@@ -209,8 +165,8 @@ int main(int argc, char **argv) {
     printf("Time for IO: %f\n", input_read_timing + output_write_timing);
     printf("Time for processing: %f\n", computation_timing);
 
-    free(attributes);
-    free(buf);
+    delete dataReader;
+    delete dianaClustering.dendrogram;
 
     printf("\n^^^^^^^^^^^^^^^^^^^^^^^^^ END OF DIANA ^^^^^^^^^^^^^^^^^^^^^^^^^\n");
     return (0);

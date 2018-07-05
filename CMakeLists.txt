@@ -22,6 +22,8 @@ add_executable(simple_diana
         diana/Dendrogram.h
         diana/DianaClustering.cpp
         diana/DianaClustering.h
+        diana/DataReader.cpp
+        diana/DataReader.h
         kmeans/kmeans.h
         kmeans/kmeans_clustering.h
         kmeans/kmeans_clustering.c
