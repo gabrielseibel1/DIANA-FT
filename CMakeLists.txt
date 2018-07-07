@@ -47,6 +47,20 @@ add_executable(dwc_diana
         kmeans/kmeans_clustering.c
 )
 
+add_executable(sh_diana
+
+        selective/sh_diana.cpp
+        selective/DendrogramHardened.cpp
+        selective/DendrogramHardened.h
+        selective/DianaClusteringHardened.cpp
+        selective/DianaClusteringHardened.h
+        selective/DataReaderHardened.cpp
+        selective/DataReaderHardened.h
+        kmeans/kmeans.h
+        kmeans/kmeans_clustering.h
+        kmeans/kmeans_clustering.c
+)
+
 add_executable(radiation_diana
 
         radiation/radiation_diana.cpp
