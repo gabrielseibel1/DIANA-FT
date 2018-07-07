@@ -59,7 +59,9 @@ add_executable(sh_diana
         kmeans/kmeans.h
         kmeans/kmeans_clustering.h
         kmeans/kmeans_clustering.c
-        selective/HardeningUtils.cpp selective/HardeningUtils.h)
+        selective/HardeningUtils.cpp
+        selective/HardeningUtils.h
+)
 
 add_executable(radiation_diana
 
