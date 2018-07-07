@@ -61,8 +61,6 @@ public:
     float **getPointsInCluster(cluster_t* cluster, float **points, int n_features);
     void updateIds();
 
-    void printlusterSavedIds(cluster_t *cluster);
-
     std::map<int, cluster_t*> clusters;
 
     void printIdsMap();
