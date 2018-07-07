@@ -96,7 +96,7 @@ void usage(char *argv0) {
 
 /*---< main() >-------------------------------------------------------------*/
 int main(int argc, char **argv) {
-    printf("\n\n^^^^^^^^^^^^^^^^^^^^^^^^^ START OF DIANA ^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+    printf("\n\n^^^^^^^^^^^^^^^^^^^^^^^^^ START OF [SH] DIANA ^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 
     int opt;
     char *inputFilename = nullptr;
@@ -146,7 +146,7 @@ int main(int argc, char **argv) {
     computation_timing = omp_get_wtime() - computation_timing;
 
     //show results
-    printf("\nDivisive Analysis completed for %d data objects with %d features each\n",
+    printf("\nDivisive Analysis with Selective Hardening completed for %d data objects with %d features each\n",
            dataReader->data->numObjects, dataReader->data->numAttributes);
 
     output_write_timing = omp_get_wtime();
@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
     delete dataReader;
     delete dianaClustering.dendrogram;
 
-    printf("\n^^^^^^^^^^^^^^^^^^^^^^^^^ END OF DIANA ^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+    printf("\n^^^^^^^^^^^^^^^^^^^^^^^^^ END OF [SH] DIANA ^^^^^^^^^^^^^^^^^^^^^^^^^\n");
     return (0);
 }
 
