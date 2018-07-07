@@ -6,10 +6,11 @@
 #include <cstdio>
 #include <cstring>
 #include "DataReaderHardened.h"
+#include "HardeningUtils.h"
 
 void DataReaderHardened::read(char *filename) {
     char line[1024];
-    int i, j;
+    int i, j1, j2;
 
     FILE *infile;
     if ((infile = fopen(filename, "r")) == nullptr) {
@@ -38,7 +39,7 @@ void DataReaderHardened::read(char *filename) {
     i = 0;
     while (fgets(line, 1024, infile) != nullptr) {
         if (strtok(line, " \t\n") == nullptr) continue;
-        for (j = 0; j < data->numAttributes; j++) {
+        for (j1 = 0, j2 = 0; assertEqual(j1, j2) && j1 < data->numAttributes; j1++, j2++) {
             /*buf[i]*/data->attributes[0][i] = static_cast<float>(atof(strtok(nullptr, " ,\t\n")));
             i++;
         }
