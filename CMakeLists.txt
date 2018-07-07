@@ -31,11 +31,11 @@ add_executable(simple_diana
 
 add_executable(dwc_diana
 
-        hardening/dwc_diana.cpp
-        hardening/DianaDuplicator.cpp
-        hardening/DianaDuplicator.h
-        hardening/DendrogramComparator.cpp
-        hardening/DendrogramComparator.h
+        dwc/dwc_diana.cpp
+        dwc/DianaDuplicator.cpp
+        dwc/DianaDuplicator.h
+        dwc/DendrogramComparator.cpp
+        dwc/DendrogramComparator.h
         diana/DataReader.cpp
         diana/DataReader.h
         diana/Dendrogram.cpp
