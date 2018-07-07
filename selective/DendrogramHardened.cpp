@@ -6,6 +6,7 @@
 #include <fstream>
 #include <cstring>
 #include "DendrogramHardened.h"
+#include "HardeningUtils.h"
 
 DendrogramHardened::DendrogramHardened(int father_cluster_size) {
     cluster_t *father_cluster = (cluster_t *) malloc(sizeof(cluster_t));
@@ -153,13 +154,14 @@ int DendrogramHardened::countClustersInLevel(int level) {
 }
 
 
-cluster_t *DendrogramHardened::getCluster(int level, int cluster_index) {
+cluster_t *DendrogramHardened::getCluster(int level, int cluster_index_1, int cluster_index_2) {
     cluster_t *cluster = clusters.find(level)->second;
-    for (int i = 0; i < cluster_index; ++i) {
+
+    for (int i = 0; assertEqual(cluster_index_1, cluster_index_2) && i < cluster_index_1; ++i) {
         if (!cluster) {
-            if (i != cluster_index - 1) {
+            if (assertEqual(cluster_index_1, cluster_index_2) && i != cluster_index_1 - 1) {
               fprintf(stderr, "Unreachable cluster_index %d in level %d! Stopped at index %d\n",
-                      cluster_index, level, i);
+                      cluster_index_1, level, i);
               exit(EXIT_FAILURE);
             } else {
                 break;

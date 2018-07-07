@@ -57,7 +57,7 @@ public:
      * Returns whether there was a split (1) or not (0)
      */
     int splitCluster(int level, int *points_membership, cluster_t *original_cluster);
-    cluster_t* getCluster(int level, int cluster_index);
+    cluster_t *getCluster(int level, int cluster_index_1, int cluster_index_2);
     float **getPointsInCluster(cluster_t* cluster, float **points, int n_features);
     void updateIds();
 

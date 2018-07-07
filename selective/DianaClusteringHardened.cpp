@@ -4,6 +4,7 @@ extern "C" {
 }
 #include <cmath>
 #include <cstdlib>
+#include "HardeningUtils.h"
 
 DianaClusteringHardened::DianaClusteringHardened(int nPoints){
     srand(7);
@@ -34,9 +35,12 @@ void DianaClusteringHardened::cluster(float **all_points,    /* in: [n_points][n
         int n_clusters_in_anterior_level = dendrogram->countClustersInLevel(level-1);
 
         //for each big cluster (of the anterior level) build two smaller clusters
-        for (int cluster_to_divide_index = 0; cluster_to_divide_index < n_clusters_in_anterior_level; ++cluster_to_divide_index) {
-
-            cluster_t* cluster_to_divide = dendrogram->getCluster(level - 1, cluster_to_divide_index);
+        int cluster_to_divide_index_1 = 0, cluster_to_divide_index_2 = 0;
+        while (assertEqual(cluster_to_divide_index_1, cluster_to_divide_index_2) &&
+               cluster_to_divide_index_1 < n_clusters_in_anterior_level)
+        {
+            assertEqual(cluster_to_divide_index_1, cluster_to_divide_index_2);
+            cluster_t* cluster_to_divide = dendrogram->getCluster(level - 1, cluster_to_divide_index_1, cluster_to_divide_index_2);
 
             if (cluster_to_divide && cluster_to_divide->size > 1) { //no need to split a cluster that has only one element
 
@@ -44,10 +48,10 @@ void DianaClusteringHardened::cluster(float **all_points,    /* in: [n_points][n
                 float** points_with_attributes_from_cluster_to_divide = dendrogram->getPointsInCluster(cluster_to_divide, all_points, n_features);
                 //get list of points that belong to new clusters
                 int *points_membership = membershipFromKmeans(points_with_attributes_from_cluster_to_divide,
-                                                                n_features,
-                                                                cluster_to_divide->size,
-                                                                2, /*split in two new clusters*/
-                                                                threshold);
+                                                              n_features,
+                                                              cluster_to_divide->size,
+                                                              2, /*split in two new clusters*/
+                                                              threshold);
 
                 there_was_a_cluster_split = dendrogram->splitCluster(level, points_membership, cluster_to_divide) || there_was_a_cluster_split;
 
@@ -55,8 +59,8 @@ void DianaClusteringHardened::cluster(float **all_points,    /* in: [n_points][n
                 free(points_with_attributes_from_cluster_to_divide[0]);
                 free(points_with_attributes_from_cluster_to_divide);
             }
+            cluster_to_divide_index_1++; cluster_to_divide_index_2++;
         }
-
         level = dendrogram->getLevels();
 
         //print_dendrogram();

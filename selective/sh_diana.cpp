@@ -79,6 +79,7 @@
 #include "DataReaderHardened.h"
 
 int num_omp_threads = 1;
+char *sdcDetectionsFilename = nullptr;
 
 /*---< usage() >------------------------------------------------------------*/
 void usage(char *argv0) {
@@ -107,7 +108,7 @@ int main(int argc, char **argv) {
 
     total_timing = omp_get_wtime();
 
-    while ((opt = getopt(argc, argv, "i:o:t:n:?")) != EOF) {
+    while ((opt = getopt(argc, argv, "i:o:t:n:d:?")) != EOF) {
         switch (opt) {
             case 'i':
                 inputFilename = optarg;
@@ -120,6 +121,9 @@ int main(int argc, char **argv) {
                 break;
             case 'n':
                 num_omp_threads = atoi(optarg);
+                break;
+            case 'd':
+                sdcDetectionsFilename = optarg;
                 break;
             case '?':
                 usage(argv[0]);
