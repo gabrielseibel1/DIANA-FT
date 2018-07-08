@@ -157,11 +157,12 @@ int DendrogramHardened::countClustersInLevel(int level) {
 cluster_t *DendrogramHardened::getCluster(int level, int cluster_index_1, int cluster_index_2) {
     cluster_t *cluster = clusters.find(level)->second;
 
-    for (int i = 0; assertEqual(cluster_index_1, cluster_index_2) && i < cluster_index_1; ++i) {
+    int i1, i2;
+    for (i1 = 0, i2 = 0; assertEqual(cluster_index_1, cluster_index_2) && assertEqual(i1, i2) && i1 < cluster_index_1; ++i1, i2++) {
         if (!cluster) {
-            if (assertEqual(cluster_index_1, cluster_index_2) && i != cluster_index_1 - 1) {
+            if (assertEqual(cluster_index_1, cluster_index_2) && assertEqual(i1, i2) && i1 != cluster_index_1 - 1) {
               fprintf(stderr, "Unreachable cluster_index %d in level %d! Stopped at index %d\n",
-                      cluster_index_1, level, i);
+                      cluster_index_1, level, i1);
               exit(EXIT_FAILURE);
             } else {
                 break;
