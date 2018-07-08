@@ -56,9 +56,9 @@ add_executable(sh_diana
         selective/DianaClusteringHardened.h
         selective/DataReaderHardened.cpp
         selective/DataReaderHardened.h
-        kmeans/kmeans.h
-        kmeans/kmeans_clustering.h
-        kmeans/kmeans_clustering.c
+        selective/kmeans_hardened.h
+        selective/kmeans_clustering_hardened.h
+        selective/kmeans_clustering_hardened.c
         selective/HardeningUtils.cpp
         selective/HardeningUtils.h
 )

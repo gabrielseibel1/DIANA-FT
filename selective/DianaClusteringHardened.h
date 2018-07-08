@@ -13,7 +13,7 @@ public:
 
     explicit DianaClusteringHardened(int nPoints);
 
-    void cluster(float **all_points, int n_features, float threshold);
+    void cluster(float **all_points, int n_features_1, float threshold);
 
     int *membershipFromKmeans(float **points, int n_features, int n_points, int k, float threshold);
 };

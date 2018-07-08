@@ -1,6 +1,6 @@
 #include "DianaClusteringHardened.h"
 extern "C" {
-    #include "../kmeans/kmeans_clustering.h"
+    #include "kmeans_clustering_hardened.h"
 }
 #include <cmath>
 #include <cstdlib>
@@ -27,6 +27,8 @@ int *DianaClusteringHardened::membershipFromKmeans(float **points, int n_feature
 void DianaClusteringHardened::cluster(float **all_points,    /* in: [n_points][n_features] */
                               int n_features, float threshold) {
 
+    int n_features_1 = n_features, n_features_2 = n_features;
+
     //iterate over the levels of the dendrogram while not all clusters are unitary
     bool there_was_a_cluster_split; //condition to stop algorithm
     int level = 1; //1 (not 0) because father cluster has already been inserted
@@ -45,10 +47,12 @@ void DianaClusteringHardened::cluster(float **all_points,    /* in: [n_points][n
             if (cluster_to_divide && cluster_to_divide->size > 1) { //no need to split a cluster that has only one element
 
                 //retrieve attributes from each point of the cluster to be split
-                float** points_with_attributes_from_cluster_to_divide = dendrogram->getPointsInCluster(cluster_to_divide, all_points, n_features);
+                assertEqual(n_features_1, n_features_2);
+                float** points_with_attributes_from_cluster_to_divide = dendrogram->getPointsInCluster(cluster_to_divide, all_points, n_features_1);
                 //get list of points that belong to new clusters
+                assertEqual(n_features_1, n_features_2);
                 int *points_membership = membershipFromKmeans(points_with_attributes_from_cluster_to_divide,
-                                                              n_features,
+                                                              n_features_1,
                                                               cluster_to_divide->size,
                                                               2, /*split in two new clusters*/
                                                               threshold);
