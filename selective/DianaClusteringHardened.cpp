@@ -35,11 +35,14 @@ void DianaClusteringHardened::cluster(float **all_points,    /* in: [n_points][n
     do {
         there_was_a_cluster_split = false;
         int n_clusters_in_anterior_level = dendrogram->countClustersInLevel(level-1);
+        int n_clusters_in_anterior_level_1 = n_clusters_in_anterior_level;
+        int n_clusters_in_anterior_level_2 = n_clusters_in_anterior_level;
 
         //for each big cluster (of the anterior level) build two smaller clusters
         int cluster_to_divide_index_1 = 0, cluster_to_divide_index_2 = 0;
         while (assertEqual(cluster_to_divide_index_1, cluster_to_divide_index_2) &&
-               cluster_to_divide_index_1 < n_clusters_in_anterior_level)
+               assertEqual(n_clusters_in_anterior_level_1, n_clusters_in_anterior_level_2) &&
+               cluster_to_divide_index_1 < n_clusters_in_anterior_level_1)
         {
             assertEqual(cluster_to_divide_index_1, cluster_to_divide_index_2);
             cluster_t* cluster_to_divide = dendrogram->getCluster(level - 1, cluster_to_divide_index_1, cluster_to_divide_index_2);
