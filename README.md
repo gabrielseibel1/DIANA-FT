@@ -23,8 +23,6 @@ possibly detecting an SDC. If so, a counter is updated in a file.
 ## Selective Hardening
 Duplication and comparison of critical variables and the operations that update them.
 
-Yet to be implemented.
-
 ## Radiation Tests
 Before running the benchmark, the script https://github.com/UFRGS-CAROL/radiation-benchmarks/blob/master/scripts/install.py should be executed. This script will create the folder to store the log files and create the conf file in /etc/radiation-benchmark.conf
 
